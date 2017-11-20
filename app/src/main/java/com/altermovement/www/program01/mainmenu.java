@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class mainmenu extends Activity {
@@ -58,8 +59,10 @@ public class mainmenu extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
-				startActivity(new Intent(getApplicationContext(), midicontroller.class));
+				Toast toast;
+				String toasttext = "This feature is not ready yet.";
+				toast = Toast.makeText(getApplicationContext(), toasttext, Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		});
 

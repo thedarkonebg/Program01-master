@@ -8,20 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Trace;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -126,9 +122,7 @@ public class DJPlayer extends Activity {
     private double temp_coeff_max;
     private long cuetime = 0;
     private static long loopStartPosition = 0;
-	private long loopEndPosition = 0;
 	private static boolean isLooped = false;
-	private long loopTime = 150;
 
     // UI STRINGS //
 
@@ -141,10 +135,6 @@ public class DJPlayer extends Activity {
 
     private String[] trackstate = new String[]{"PLAY", "STOP", "LOOP"};
     private int i = 1;
-
-    // GESTURES //
-
-    private GestureDetector gestureDetector;
 
     // ON CREATE //
 
@@ -211,7 +201,6 @@ public class DJPlayer extends Activity {
 						i = 2;
 						isLooped = true;
                         loopStartPosition = audioPlayer.getCurrentPosition();
-//                        new loopTask().execute();
                         loopCue();
                         break;
 
@@ -530,7 +519,9 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         text_time.setText(currenttime + " / " + endtime);
 
         if(mHandler == null)mHandler = new Handler();
+
         //Make sure you update Seekbar on UI thread
+
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -555,21 +546,6 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         }
     }
 
-    private class loopTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            while(isLooped) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                audioPlayer.seekTo(loopStartPosition);
-            }
-            return null;
-        }
-    }
-
     private void loopCue() {
         Thread loopNowThread = new Thread() {
             @Override
@@ -590,7 +566,6 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
 	private void zeroCue(){
 		cuetime = 0;
 		loopStartPosition = 0;
-		loopEndPosition = 0;
 	}
 
     private String stringForTime(int timeMs) {
@@ -730,74 +705,94 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
 		{
 			if (e1.getX() - e2.getX() > MIN_SWIPPING_DISTANCE && Math.abs(velocityX) > THRESHOLD_VELOCITY)
 			{
-				float velocityPercentX    = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
+			    if(!isLooped) {
+                    float velocityPercentX = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
 
-               	float bend = 1 * velocityPercentX;
-               	float bendmin = 1 - bend;
-				long duration = (long)(bend * 1000);
+                    float bend = 1 * velocityPercentX;
+                    float bendmin = 1 - bend;
+                    long duration = (long) (bend * 1000);
 
-				ValueAnimator downAnimator = ValueAnimator.ofFloat(1, bendmin);
-				downAnimator.setDuration(duration);
-				ValueAnimator backAnimator = ValueAnimator.ofFloat(bendmin, 1);
-				backAnimator.setDuration(duration);
+                    ValueAnimator downAnimator = ValueAnimator.ofFloat(1, bendmin);
+                    downAnimator.setDuration(duration);
+                    ValueAnimator backAnimator = ValueAnimator.ofFloat(bendmin, 1);
+                    backAnimator.setDuration(duration);
 
-				downAnimator.start();
-				downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						float momentbend = (float) animation.getAnimatedValue();
-						Log.i(TAG, String.valueOf(momentbend));
-						playbackparams = new PlaybackParameters(momentbend, momentbend);
-						audioPlayer.setPlaybackParameters(playbackparams);
-					}
-				});
+                    downAnimator.start();
+                    downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float momentbend = (float) animation.getAnimatedValue();
+                            Log.i(TAG, String.valueOf(momentbend));
+                            playbackparams = new PlaybackParameters(momentbend, momentbend);
+                            audioPlayer.setPlaybackParameters(playbackparams);
+                        }
+                    });
 
-				backAnimator.start();
-				backAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						float momentbend = (float) animation.getAnimatedValue();
-						Log.i(TAG, String.valueOf(momentbend));
-						playbackparams = new PlaybackParameters(momentbend, momentbend);
-						audioPlayer.setPlaybackParameters(playbackparams);
-					}
-				});
-				return false;
+                    backAnimator.start();
+                    backAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float momentbend = (float) animation.getAnimatedValue();
+                            Log.i(TAG, String.valueOf(momentbend));
+                            playbackparams = new PlaybackParameters(momentbend, momentbend);
+                            audioPlayer.setPlaybackParameters(playbackparams);
+                        }
+                    });
+                    return false;
+                } else {
+                    float velocityPercentX = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
+                    if (velocityPercentX < 0.5) {
+                        loopStartPosition = loopStartPosition - 25;
+                    } else {
+                        loopStartPosition = loopStartPosition - (long)(250 * velocityPercentX);
+                    }
+                    return false;
+                }
 			}
 			else if (e2.getX() - e1.getX() > MIN_SWIPPING_DISTANCE && Math.abs(velocityX) > THRESHOLD_VELOCITY)
 			{
-				float velocityPercentX    = Math.abs(velocityX / 10000);
+			    if (!isLooped) {
+                    float velocityPercentX = Math.abs(velocityX / 10000);
 
-				float bend = 1 * velocityPercentX;
-				float bendmax = 1 + bend;
-				long duration = (long)(bend * 1000);
+                    float bend = 1 * velocityPercentX;
+                    float bendmax = 1 + bend;
+                    long duration = (long) (bend * 1000);
 
-				ValueAnimator upAnimator = ValueAnimator.ofFloat(1, bendmax);
-				upAnimator.setDuration(duration);
+                    ValueAnimator upAnimator = ValueAnimator.ofFloat(1, bendmax);
+                    upAnimator.setDuration(duration);
 
-				ValueAnimator backAnimator = ValueAnimator.ofFloat(bendmax, 1);
-				backAnimator.setDuration(duration);
+                    ValueAnimator backAnimator = ValueAnimator.ofFloat(bendmax, 1);
+                    backAnimator.setDuration(duration);
 
-				upAnimator.start();
-				upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						float momentbend = (float) animation.getAnimatedValue();
-						playbackparams = new PlaybackParameters(momentbend, momentbend);
-						audioPlayer.setPlaybackParameters(playbackparams);
-					}
-				});
+                    upAnimator.start();
+                    upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float momentbend = (float) animation.getAnimatedValue();
+                            playbackparams = new PlaybackParameters(momentbend, momentbend);
+                            audioPlayer.setPlaybackParameters(playbackparams);
+                        }
+                    });
 
-				backAnimator.start();
-				backAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						float momentbend = (float) animation.getAnimatedValue();
-						playbackparams = new PlaybackParameters(momentbend, momentbend);
-						audioPlayer.setPlaybackParameters(playbackparams);
-					}
-				});
-				return false;
+                    backAnimator.start();
+                    backAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float momentbend = (float) animation.getAnimatedValue();
+                            playbackparams = new PlaybackParameters(momentbend, momentbend);
+                            audioPlayer.setPlaybackParameters(playbackparams);
+                        }
+                    });
+                    return false;
+                } else {
+                    float velocityPercentX = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
+                    if (velocityPercentX < 0.5) {
+                        loopStartPosition = loopStartPosition + 25;
+                    } else {
+                        loopStartPosition = loopStartPosition + (long)(250 * velocityPercentX);
+                    }
+			        return false;
+                }
 			}
 			return false;
 		}
