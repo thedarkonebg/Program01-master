@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">One for all</string>
+    <string name="pitch">PITCH</string>
+    <string name="tap">BPM TAP</string>
+    <string name="convert">CONVERT</string>
+    <string name="enter_bpm_of_track_1">Enter BPM of track 1</string>
+    <string name="enter_bpm_of_track_2">Enter BPM of track 2</string>
+    <string name="reset">RESET</string>
+    <string name="reset1">RESET</string>
+    <string name="tap_button_to_see_bpm1">TAP BUTTON TO SEE BPM</string>
+    <string name="bpm_conversion_in">BPM CONVERSION IN %</string>
+    <string name="taptap">TAP</string>
+    <string name="pitch1">PITCH</string>
+
+    <string name="title_activity_fullscreen">One4all</string>
+    <string name="showtap">TAP TO SHOW</string>
+    <string name="taptext">BPM TAP</string>
+    <string name="tapbut">BPM TAP</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="title_activity_djplayer">DJPlayer</string>
+</resources>

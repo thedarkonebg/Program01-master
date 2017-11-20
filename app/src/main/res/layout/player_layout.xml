@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:layout_editor_absoluteX="8dp"
+    android:background="@android:color/black"
+    tools:layout_editor_absoluteY="8dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/load_file_progressbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+            app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+            app:layout_constraintVertical_bias="0.81"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/blue_overlay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/layout_pitch">
+
+                <ImageButton
+                    android:id="@+id/button_play"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/play_button"
+                    android:scaleType="fitXY"/>
+
+                <ImageButton
+                    android:id="@+id/button_cue"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@+id/button_play"
+                    android:background="@drawable/cue_button"
+                    android:scaleType="fitXY"/>
+
+                <Button
+                    android:id="@+id/button_bpm"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/button_load"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toEndOf="@+id/button_cue"
+                    android:layout_toRightOf="@+id/button_cue"
+                    android:text="BPM"/>
+
+                <Button
+                    android:id="@+id/button_load"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_alignTop="@+id/button_cue"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toEndOf="@+id/button_cue"
+                    android:layout_toRightOf="@+id/button_cue"
+                    android:text="LOAD"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_pitch"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <com.altermovement.www.program01.Controls.VerticalSeekBarWrapper
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/button_pitchplus"
+                    android:layout_below="@+id/button_pitchminus"
+                    android:layout_centerHorizontal="true">
+
+                    <com.altermovement.www.program01.Controls.VerticalSeek
+                        android:id="@+id/seekbar_pitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:progressDrawable="@color/black_overlay"
+                        android:splitTrack="false"
+                        android:thumb="@drawable/thumb"
+                        app:seekBarRotation="CW90"/> <!-- Rotation: CW90 or CW270 -->
+                </com.altermovement.www.program01.Controls.VerticalSeekBarWrapper>
+
+                <Button
+                    android:id="@+id/button_pitchminus"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="- %"/>
+
+                <Button
+                    android:id="@+id/button_range"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="range"
+                    android:textSize="9sp"/>
+
+                <Button
+                    android:id="@+id/button_pitchplus"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_above="@+id/button_range"
+                    android:layout_centerHorizontal="true"
+                    android:text="+ %"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_jog"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:clipChildren="true"
+                android:forceHasOverlappingRendering="true"
+                android:gravity="clip_vertical|clip_horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/layout_pitch"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_disk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:forceHasOverlappingRendering="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cd"/>
+            </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/blue_overlay"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressbar_time"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/seekbar"
+                android:max="100"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:progress="100"
+                android:progressTint="@color/aaa"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+
+                <com.github.derlio.waveform.SimpleWaveformView
+                    android:id="@+id/waveform"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:indicatorColor="@android:color/white"
+                    app:waveformColor="@android:color/holo_red_dark" />
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/white_overlay"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="right"
+                    android:text="Artist:"
+                    android:textColor="#c0cbcbcb"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView22"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="right"
+                    android:text="Track title:"
+                    android:textColor="#c0cbcbcb"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView23"
+                    android:layout_alignBottom="@+id/textView23"
+                    android:layout_toEndOf="@+id/textView23"
+                    android:layout_toRightOf="@+id/textView23"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="Unknown Track"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView22"
+                    android:layout_alignBottom="@+id/textView22"
+                    android:layout_toEndOf="@+id/textView22"
+                    android:layout_toRightOf="@+id/textView22"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="Unknown Artist"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white_overlay"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_time"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="00:00 / 00:00"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/text_time"
+                    android:layout_alignStart="@+id/text_time"
+                    android:layout_below="@+id/text_time"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:text="Time elapsed / Time remaining"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/text_pitch"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="Pitch (+/- %)"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_pitch"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="88:88"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
