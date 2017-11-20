@@ -9,11 +9,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import static com.altermovement.www.program01.R.layout.splash;
+import static com.altermovement.www.program01.R.layout.splashscreen_layout;
 
-public class splashscreen extends Activity {
+public class SplashScreen extends Activity {
 
-	private static final String LOG_TAG = splashscreen.class.getSimpleName();
+	private static final String LOG_TAG = SplashScreen.class.getSimpleName();
 
 	@Override
 	public void onBackPressed() {
@@ -29,7 +29,7 @@ public class splashscreen extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		setContentView(splash);
+		setContentView(splashscreen_layout);
 
         final ImageView background = (ImageView) findViewById(R.id.background);
         background.setImageResource(R.drawable.bg);
@@ -110,8 +110,8 @@ public class splashscreen extends Activity {
 		Runnable finishsplash = new Runnable() {
 			@Override
 			public void run() {
-				startActivity(new Intent(getApplicationContext(), mainmenu.class));
-				splashscreen.this.finish();
+				startActivity(new Intent(getApplicationContext(), MainMenu.class));
+				SplashScreen.this.finish();
 			}
 		};
 

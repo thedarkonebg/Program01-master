@@ -5,7 +5,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-import com.altermovement.www.program01.oscillator;
+import com.altermovement.www.program01.Oscillator;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -117,23 +117,23 @@ public class Oscillators implements Runnable{
 
         DataPoint[] datapp = new DataPoint[datasize];
 
-        oscillator.graphview.getViewport().setXAxisBoundsManual(true);
-        oscillator.graphview.getViewport().setMinX(4);
-        oscillator.graphview.getViewport().setMaxX(datasize-4);
+        Oscillator.graphview.getViewport().setXAxisBoundsManual(true);
+        Oscillator.graphview.getViewport().setMinX(4);
+        Oscillator.graphview.getViewport().setMaxX(datasize-4);
 
-        oscillator.graphview.getViewport().setYAxisBoundsManual(true);
-        oscillator.graphview.getViewport().setMinY(-amplitude);
-        oscillator.graphview.getViewport().setMaxY(+amplitude);
+        Oscillator.graphview.getViewport().setYAxisBoundsManual(true);
+        Oscillator.graphview.getViewport().setMinY(-amplitude);
+        Oscillator.graphview.getViewport().setMaxY(+amplitude);
 
-        oscillator.graphview.getViewport().setBackgroundColor(Color.rgb(64, 64, 64));
+        Oscillator.graphview.getViewport().setBackgroundColor(Color.rgb(64, 64, 64));
 
-        oscillator.graphview.getLegendRenderer().setVisible(false);
-        oscillator.graphview.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        oscillator.graphview.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        oscillator.graphview.getGridLabelRenderer().setHighlightZeroLines(false);
+        Oscillator.graphview.getLegendRenderer().setVisible(false);
+        Oscillator.graphview.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        Oscillator.graphview.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        Oscillator.graphview.getGridLabelRenderer().setHighlightZeroLines(false);
 
         waveseries = new LineGraphSeries<>();
-        oscillator.graphview.addSeries(waveseries);
+        Oscillator.graphview.addSeries(waveseries);
 
         // WAVEFORM GENERATOR MAIN THREAD
         myWave.play();
@@ -307,7 +307,7 @@ public class Oscillators implements Runnable{
 
     public void stop() {
 
-        oscillator.graphview.removeAllSeries();
+        Oscillator.graphview.removeAllSeries();
         Thread t = thread;
         thread = null;
         // Wait for the thread to exit

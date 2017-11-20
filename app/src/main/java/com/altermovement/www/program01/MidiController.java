@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 
-public class midicontroller extends Activity{
+public class MidiController extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class midicontroller extends Activity{
 
             @Override
             public void onClick(View v) {
-                    Intent midi = new Intent(midicontroller.this, midi_settings.class);
+                    Intent midi = new Intent(MidiController.this, MidiSettings.class);
                     startActivity(midi);
             }
         });
@@ -87,13 +87,13 @@ public class midicontroller extends Activity{
             @Override
             public void onClick(View v) {
 
-                new AlertDialog.Builder(midicontroller.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                new AlertDialog.Builder(MidiController.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                         .setMessage("Exit and go back to main menu?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(midicontroller.this, mainmenu.class));
-                                midicontroller.this.finish();
+                                startActivity(new Intent(MidiController.this, MainMenu.class));
+                                MidiController.this.finish();
                             }
                         }).setNegativeButton("No", null).show();
             }
@@ -113,9 +113,9 @@ public class midicontroller extends Activity{
 
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent ob = new Intent(midicontroller.this, mainmenu.class);
+        Intent ob = new Intent(MidiController.this, MainMenu.class);
         startActivity(ob);
-        midicontroller.this.finish();
+        MidiController.this.finish();
     }
 
     @Override

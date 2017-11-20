@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
-public class converter extends Activity {
+public class Converter extends Activity {
 
     @SuppressWarnings("ConstantConditions")
     public void hideSoftKeyboard() {
@@ -264,14 +264,14 @@ public class converter extends Activity {
 
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(converter.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                new AlertDialog.Builder(Converter.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                         .setMessage("Are you sure you want to exit?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent ob = new Intent(converter.this, mainmenu.class);
+                                Intent ob = new Intent(Converter.this, MainMenu.class);
                                 startActivity(ob);
-                                converter.this.finish();
+                                Converter.this.finish();
                             }
                         }).setNegativeButton("No", null).show();
             }
@@ -294,10 +294,16 @@ public class converter extends Activity {
     }
 
     public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
-        Intent ob = new Intent(converter.this, mainmenu.class);
-        startActivity(ob);
-        converter.this.finish();
+        new AlertDialog.Builder(Converter.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent ob = new Intent(Converter.this, MainMenu.class);
+                        startActivity(ob);
+                        Converter.this.finish();
+                    }
+                }).setNegativeButton("No", null).show();
     }
 
     @Override

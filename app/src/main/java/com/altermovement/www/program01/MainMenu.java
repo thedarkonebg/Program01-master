@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class mainmenu extends Activity {
+public class MainMenu extends Activity {
 	@Override
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +36,20 @@ public class mainmenu extends Activity {
 		final Button but66 = (Button) findViewById(R.id.but6);
 
 		but11.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				//TODO
-
 			}
 		});
 
 		but22.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
-				startActivity(new Intent(getApplicationContext(), converter.class));
-
+				startActivity(new Intent(getApplicationContext(), Converter.class));
 			}
 		});
 
 		but33.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Toast toast;
@@ -67,34 +60,28 @@ public class mainmenu extends Activity {
 		});
 
 		but44.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				startActivity(new Intent(getApplicationContext(), DJPlayer.class));
-
 			}
 		});
 
 		but55.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
-				startActivity(new Intent(getApplicationContext(), oscillator.class));
+				startActivity(new Intent(getApplicationContext(), Oscillator.class));
 			}
 		});
 
 		but66.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(mainmenu.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+				new AlertDialog.Builder(MainMenu.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
 						.setMessage("Are you sure you want to exit?")
 						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								mainmenu.this.finish();
+								MainMenu.this.finish();
 							}
 						}).setNegativeButton("No", null).show();
 			}
@@ -109,7 +96,7 @@ public class mainmenu extends Activity {
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mainmenu.this.finish();
+						MainMenu.this.finish();
 					}
 				}).setNegativeButton("No", null).show();
 	}

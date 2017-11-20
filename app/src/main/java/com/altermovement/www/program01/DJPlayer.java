@@ -655,7 +655,7 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent ob = new Intent(DJPlayer.this, mainmenu.class);
+                        Intent ob = new Intent(DJPlayer.this, MainMenu.class);
                         startActivity(ob);
                         DJPlayer.this.finish();
                     }

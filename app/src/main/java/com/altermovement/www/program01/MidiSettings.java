@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import de.humatic.nmj.NMJSystemListener;
 import de.humatic.nmj.NetworkMidiListener;
 
-public class midi_settings extends Activity implements NMJSystemListener, NetworkMidiListener {
+public class MidiSettings extends Activity implements NMJSystemListener, NetworkMidiListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class midi_settings extends Activity implements NMJSystemListener, Networ
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
-        setContentView(R.layout.midi_settings);
+        setContentView(R.layout.midisettings_layout);
 
     }
 

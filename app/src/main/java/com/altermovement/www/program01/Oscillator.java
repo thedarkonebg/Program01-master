@@ -2,9 +2,11 @@ package com.altermovement.www.program01;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,7 +22,7 @@ import com.altermovement.www.program01.Waveform.Oscillators;
 import com.jjoe64.graphview.GraphView;
 
 
-public class oscillator extends Activity implements View.OnClickListener {
+public class Oscillator extends Activity implements View.OnClickListener {
 
     private static int FACTOR_VOL = 327;
 
@@ -633,11 +635,16 @@ public class oscillator extends Activity implements View.OnClickListener {
     }
 
     public void onBackPressed() {
-
-        Log.d("CDA", "onBackPressed Called");
-        Intent ob = new Intent(oscillator.this, mainmenu.class);
-        startActivity(ob);
-        oscillator.this.finish();
+        new AlertDialog.Builder(Oscillator.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent ob = new Intent(Oscillator.this, MainMenu.class);
+                        startActivity(ob);
+                        Oscillator.this.finish();
+                    }
+                }).setNegativeButton("No", null).show();
     }
 
 
