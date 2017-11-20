@@ -24,7 +24,7 @@ public class MidiController extends Activity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
-        setContentView(R.layout.activity_midicontroller);
+        setContentView(R.layout.midicontroller_layout);
 
         final Button but1 = (Button) findViewById(R.id.but1);
         final Button but2 = (Button) findViewById(R.id.cont1_button);

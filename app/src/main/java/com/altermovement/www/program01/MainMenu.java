@@ -24,7 +24,7 @@ public class MainMenu extends Activity {
 
 		overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.mainmenu_layout);
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

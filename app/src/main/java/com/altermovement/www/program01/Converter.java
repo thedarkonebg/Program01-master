@@ -56,7 +56,7 @@ public class Converter extends Activity {
 
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
-        setContentView(R.layout.activity_program01);
+        setContentView(R.layout.bpmconverter_layout);
 
         // CONVERSION BUTTONS
 
