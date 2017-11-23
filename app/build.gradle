@@ -14,7 +14,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.altermovement.www.program01"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -34,7 +34,7 @@ android {
     productFlavors {
         OneForAll {
             applicationId 'com.oneforall'
-            minSdkVersion 16
+            minSdkVersion 17
             targetSdkVersion 21
             versionCode 1
             versionName '1.0'

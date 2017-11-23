@@ -81,7 +81,6 @@ public class DJPlayer extends Activity {
     private ImageView       image_disk;
 
     private ProgressBar     progressbar_time;
-    private ProgressBar     load_file_progressbar;
 
     private TextView        text_time;
     private TextView        text_pitch;
@@ -379,14 +378,23 @@ public class DJPlayer extends Activity {
             @Override
             public void run() {
                 try {
+
                     String path = waveformfile.getAbsolutePath();
+                    final ProgressBar load_file_progressbar;
                     load_file_progressbar = (ProgressBar) findViewById(R.id.load_file_progressbar);
-                    load_file_progressbar.setVisibility(View.VISIBLE);
                     final SoundFile soundFile = SoundFile.create(path, new SoundFile.ProgressListener() {
                                 int lastProgress = 0;
                                 @Override
                                 public boolean reportProgress(double fractionComplete) {
                                     final int progress = (int) (fractionComplete * 100);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (progress <= 99) {
+                                                load_file_progressbar.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    });
                                     if (lastProgress == progress) {
                                         return true;
                                     }
@@ -408,13 +416,11 @@ public class DJPlayer extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             DisplayMetrics metrics = new DisplayMetrics();
                             getWindowManager().getDefaultDisplay().getMetrics(metrics);
                             waveform.millisecsToPixels((int) (audioPlayer.getDuration() / 100));
                             waveform.setAudioFile(soundFile);
                             waveform.invalidate();
-
                         }
                     });
                 } catch (IOException e) {
@@ -824,5 +830,4 @@ public class DJPlayer extends Activity {
 			initializePlayer();
 		}
 	}
-
 }
