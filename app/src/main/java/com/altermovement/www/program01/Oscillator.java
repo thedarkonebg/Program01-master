@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -30,9 +31,9 @@ public class Oscillator extends Activity implements View.OnClickListener {
     private int wavefreq_min = 2;
     private int currentVol;
 
-    private int oscOneState = 0;
-    private int oscTwoState = 0;
-    private int oscThreeState = 0;
+    private int oscOneState;
+    private int oscTwoState;
+    private int oscThreeState;
 
     public static GraphView graphview;
 
@@ -57,10 +58,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
     SeekBar volumeseek_a;
     SeekBar volumeseek_b;
     SeekBar volumeseek_c;
-
-    SeekBar wavemode_a;
-    SeekBar wavemode_b;
-    SeekBar wavemode_c;
 
     SeekBar volumeseek_main;
 
@@ -88,10 +85,22 @@ public class Oscillator extends Activity implements View.OnClickListener {
         initializeView();
 
         amp_main = (volumeseek_main.getProgress() * FACTOR_VOL) + 1;
+
+        // GraphView configuration
+
         graphview = (GraphView) findViewById(R.id.graph);
 
-        // WAVEFORM ICONS FUNCTIONALITY
+        graphview.setTitle("WAVEFORM DISPLAY");
+        graphview.setTitleColor(Color.rgb(255, 255, 255));
+        graphview.getLegendRenderer().setVisible(false);
+        graphview.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graphview.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graphview.getGridLabelRenderer().setHighlightZeroLines(false);
 
+        graphview.getViewport().setBackgroundColor(Color.rgb(0, 48, 0));
+        graphview.getGridLabelRenderer().setGridColor(Color.rgb(64, 64, 64));
+
+        // WAVEFORM ICONS FUNCTIONALITY
 
         waveicona.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,101 +295,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
             }
         });
 
-        // WAVEFORM A B C MODE
-
-//        wavemode_a.setProgress(1);
-//        wavemode_a.setOnClickListener(this);
-//        wavemode_a.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onProgressChanged(SeekBar wavemode_a, int progressValue, boolean fromUser) {
-//                wave.mode_a = (wavemode_a.getProgress() + 1);
-//                switch (wavemode_a.getProgress()) {
-//                    case 0:
-//                        waveicona.setBackgroundResource(R.drawable.squarewave_icon);
-//                        break;
-//                    case 1:
-//                        waveicona.setBackgroundResource(R.drawable.sinewave_icon);
-//                        break;
-//                    case 2:
-//                        waveicona.setBackgroundResource(R.drawable.triangularwave_icon);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar wavemode_a) {
-//                // TODO Auto-generated method stub
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar wavemode_a) {
-//                wave.mode_a = (wavemode_a.getProgress() + 1);
-//            }
-//        });
-//
-//        wavemode_b.setProgress(1);
-//        wavemode_b.setOnClickListener(this);
-//        wavemode_b.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onProgressChanged(SeekBar wavemode_b, int progressValue, boolean fromUser) {
-//                wave.mode_b = (wavemode_b.getProgress() + 1);
-//                switch (wavemode_b.getProgress()) {
-//                    case 0:
-//                        waveiconb.setBackgroundResource(R.drawable.squarewave_icon);
-//                        break;
-//                    case 1:
-//                        waveiconb.setBackgroundResource(R.drawable.sinewave_icon);
-//                        break;
-//                    case 2:
-//                        waveiconb.setBackgroundResource(R.drawable.triangularwave_icon);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar wavemode_b) {
-//                // TODO Auto-generated method stub
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar wavemode_b) {
-//                wave.mode_b = (wavemode_b.getProgress() + 1);
-//            }
-//        });
-//
-//        wavemode_c.setProgress(1);
-//        wavemode_c.setOnClickListener(this);
-//        wavemode_c.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onProgressChanged(SeekBar wavemode_c, int progressValue, boolean fromUser) {
-//                wave.mode_c = (wavemode_c.getProgress() + 1);
-//                switch (wavemode_c.getProgress()){
-//                    case 0:
-//                        waveiconc.setBackgroundResource(R.drawable.squarewave_icon);
-//                        break;
-//                    case 1:
-//                        waveiconc.setBackgroundResource(R.drawable.sinewave_icon);
-//                        break;
-//                    case 2:
-//                        waveiconc.setBackgroundResource(R.drawable.triangularwave_icon);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar wavemode_c) {
-//                // TODO Auto-generated method stub
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar wavemode_c) {
-//                wave.mode_c = (wavemode_c.getProgress() + 1);
-//            }
-//        });
-
         // MODULATE FREQUENCY AND AMPLITUDE
         modulate_amp.setProgress(0);
         modulate_amp.setOnClickListener(this);
@@ -450,7 +364,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
 
         startstop.setOnClickListener(this);
 
-
         aminus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 wavefrequency_a.setProgress(wavefrequency_a.getProgress() - 1);
@@ -508,8 +421,9 @@ public class Oscillator extends Activity implements View.OnClickListener {
         freqtext_c = (TextView) findViewById(R.id.frequency_c);
 
         audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
-
+        if(audioManager != null) {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+        }
         wavefrequency_a = (SeekBar) findViewById(R.id.freqseek_a);
         wavefrequency_b = (SeekBar) findViewById(R.id.freqseek_b);
         wavefrequency_c = (SeekBar) findViewById(R.id.freqseek_c);
@@ -517,10 +431,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
         volumeseek_a = (SeekBar) findViewById(R.id.ampseek_a);
         volumeseek_b = (SeekBar) findViewById(R.id.ampseek_b);
         volumeseek_c = (SeekBar) findViewById(R.id.ampseek_c);
-
-        //wavemode_a = (SeekBar) findViewById(R.id.modeseek_a);
-        //wavemode_b = (SeekBar) findViewById(R.id.modeseek_b);
-        //wavemode_c = (SeekBar) findViewById(R.id.modeseek_c);
 
         volumeseek_main = (SeekBar) findViewById(R.id.ampseek_main);
 
@@ -533,8 +443,8 @@ public class Oscillator extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
         boolean on = startstop.isChecked();
+
         if (on) {
             if (wave != null)
                 fadein();
@@ -547,7 +457,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
         if (wave != null)
             wave.stop();
@@ -555,16 +464,16 @@ public class Oscillator extends Activity implements View.OnClickListener {
 
     @Override
     public void onPause() {
-
         super.onPause();
         if (wave != null)
             wave.stop();
     }
 
-    public void fadeout(){
+    // FADE IN AND FADE OUT are neutralizing the "pop" sound when oscillator starts/stops by gradually increasing/decreasing volume
 
+    public void fadeout(){
         int targetVol = 0;
-        int STEP_DOWN=2;
+        int STEP_DOWN=1;
         currentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         int nextVol=currentVol;
         // fade music gently
@@ -580,13 +489,11 @@ public class Oscillator extends Activity implements View.OnClickListener {
         }
         wave.stop();
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, nextVol, 0);
-
     }
 
     public void fadein(){
-
         int initialVol = 0;
-        int STEP_UP=2;
+        int STEP_UP=1;
         currentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
 
@@ -601,6 +508,10 @@ public class Oscillator extends Activity implements View.OnClickListener {
         wave.mode_a = 2;
         wave.mode_b = 2;
         wave.mode_c = 2;
+
+        oscOneState = 0;
+        oscTwoState = 0;
+        oscThreeState = 0;
 
         wave.amplitude = amp_main;
         volumeseek_main.setProgress(50);
@@ -622,15 +533,15 @@ public class Oscillator extends Activity implements View.OnClickListener {
         }
     }
 
+    // Handles back button press, shows exit popup
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             Log.d("CDA", "onKeyDown Called");
             onBackPressed();
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -646,9 +557,6 @@ public class Oscillator extends Activity implements View.OnClickListener {
                     }
                 }).setNegativeButton("No", null).show();
     }
-
-
-
 
 }
 

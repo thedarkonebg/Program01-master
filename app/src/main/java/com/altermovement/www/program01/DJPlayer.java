@@ -64,7 +64,6 @@ public class DJPlayer extends Activity {
     // TAG //
 
     private static final String TAG = "AudioPlayer";
-    private float x1,x2;
 
     // USER INTERFACE //
 
@@ -101,12 +100,9 @@ public class DJPlayer extends Activity {
     // EXOPLAYER PLAYER AND UTILITIES //
 
     private static ExoPlayer audioPlayer;
-    private TrackSelector trackSelector;
-    private DefaultLoadControl loadControl;
-    private Context mContext;
+	private Context mContext;
     private Handler mHandler;
     PlaybackParameters playbackparams;
-    private Thread thread;
 
     // AUDIOFILE //
 
@@ -161,11 +157,13 @@ public class DJPlayer extends Activity {
         gdt = new GestureDetector(new GestureListener());
         image_disk.setOnTouchListener(new View.OnTouchListener()
         {
-            @Override
+			@Override
             public boolean onTouch(final View view, final MotionEvent event) {
                 gdt.onTouchEvent(event);
                 return true;
-            } });
+            }
+
+        });
 
         // LOAD BUTTON //
 
@@ -223,7 +221,6 @@ public class DJPlayer extends Activity {
         });
 
         button_cue.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -259,7 +256,6 @@ public class DJPlayer extends Activity {
 					audioPlayer.seekTo(cuetime);
 					isPlaying = false;
                     isLooped = false;
-
                 }
                 return true;
             }
@@ -270,7 +266,8 @@ public class DJPlayer extends Activity {
 
         seekbar_pitch.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-            @Override
+            @SuppressLint("DefaultLocale")
+			@Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 temp_coeff_max = seekbar_pitch.getMax() * pitch_factor;
 
@@ -291,7 +288,8 @@ public class DJPlayer extends Activity {
                 // TODO Auto-generated method stub
             }
 
-            @Override
+            @SuppressLint("DefaultLocale")
+			@Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 temp_coeff_max = seekbar_pitch.getMax() * pitch_factor;
                 double temp_coeff = seekbar_pitch.getProgress();
@@ -321,7 +319,8 @@ public class DJPlayer extends Activity {
         // PITCH RANGE CHANGER //
 
         button_range.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @SuppressLint("DefaultLocale")
+			public void onClick(View v) {
                 int temp_progress;
                 switch (sw_case) {
 
@@ -372,6 +371,8 @@ public class DJPlayer extends Activity {
     }
 
     // WAVERFORM VIEW //
+
+	// Starts the file explorer. When track is selected, sends it to ExoPlayer and to WaveForm display
 
     private void loadSoundWave() {
         loadSongfileThread = new Thread() {
@@ -427,11 +428,13 @@ public class DJPlayer extends Activity {
 
     }
 
+    // Initializes the ExoPlayer
+
     private void initializePlayer() {
 
         mHandler = new Handler();
-        loadControl = new DefaultLoadControl();
-        trackSelector = new DefaultTrackSelector();
+		DefaultLoadControl loadControl = new DefaultLoadControl();
+		TrackSelector trackSelector = new DefaultTrackSelector();
         audioPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
         audioPlayer.addListener(eventListener);
     }
@@ -450,7 +453,7 @@ public class DJPlayer extends Activity {
 
         text_artist.setSelected(true);
         text_track.setSelected(true);
-        text_pitch.setText("0.00");
+        text_pitch.setText(R.string.default_tempo);
 
         // CONTROLS //
 
@@ -472,6 +475,8 @@ public class DJPlayer extends Activity {
         filedialog = new OpenFile(this);
     }
 
+    // Creates instance of FileDataSourceFactory, ExtractorMediaSource and prepares track for playback
+
     private void loadTrack(Uri filename) {
 
         FileDataSourceFactory dataSourceFactory = new FileDataSourceFactory();
@@ -481,9 +486,9 @@ public class DJPlayer extends Activity {
         audioPlayer.seekTo(0);
     }
 
+	// Creates instances for file extractor
 
-
-private static class AudioExtractorsFactory implements ExtractorsFactory {
+	private static class AudioExtractorsFactory implements ExtractorsFactory {
 
         @Override
         public Extractor[] createExtractors() {
@@ -493,6 +498,8 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                     new Mp3Extractor()};
         }
     }
+
+    // Takes META data from file and displays on screen the track and artist name
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
     private void setMeta(Uri path){
@@ -510,7 +517,10 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         text_track.setText(meta[1]);
     }
 
-    private void setTime() {
+    // Sets the time and position of progressbar for time
+
+    @SuppressLint("SetTextI18n")
+	private void setTime() {
         progressbar_time.setProgress(0);
         progressbar_time.setMax((int) audioPlayer.getDuration()/1000);
 
@@ -539,12 +549,16 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         });
     }
 
+    // Updates the playback position cursor
+
 	private synchronized void updateDisplay() {
         if (audioPlayer != null && isPlaying) {
             int now = (int) audioPlayer.getCurrentPosition();
             waveform.setPlaybackPosition(now);
         }
     }
+
+    // Loops 150 ms of the track after loopStartPosition
 
     private void loopCue() {
         Thread loopNowThread = new Thread() {
@@ -563,10 +577,14 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         loopNowThread.start();
     }
 
+    // Zeroes the cue point
+
 	private void zeroCue(){
 		cuetime = 0;
 		loopStartPosition = 0;
 	}
+
+	// Convert time in milliseconds to hour/minutes/seconds
 
     private String stringForTime(int timeMs) {
         StringBuilder mFormatBuilder;
@@ -586,6 +604,8 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
             return mFormatter.format("%02d:%02d", minutes, seconds).toString();
         }
     }
+
+    // This is ExoPlayer listener that detects changes in playback events
 
     private ExoPlayer.EventListener eventListener = new ExoPlayer.EventListener() {
         @Override
@@ -648,55 +668,10 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent ob = new Intent(DJPlayer.this, MainMenu.class);
-                        startActivity(ob);
-                        DJPlayer.this.finish();
-                    }
-                }).setNegativeButton("No", null).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-        if (isPlaying) {
-            isPlaying = false;
-            loadSongfileThread = null;
-            audioPlayer.stop();
-            audioPlayer.release();
-        } else {
-            audioPlayer.release();
-        }
-    }
-
-    @Override
-    public void onPause() {
-
-        super.onPause();
-        if (isPlaying) {
-            isPlaying = false;
-            loadSongfileThread = null;
-            audioPlayer.stop();
-            audioPlayer.release();
-        } else {
-            audioPlayer.release();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!isPlaying) {
-            initializePlayer();
-        }
-    }
+	// The gesture listener detects the direction of swipe and moves the jog in that particular direction. //
+	// The property animator animates the tempo of the track up/down and then back to normal //
+	// The jog is working like on DJ players, if user swipes faster, the tempo bend is higher and for more time //
+	// If the track is on pause, it moves back or forward the current position of audiotrack //
 
 	private class GestureListener extends GestureDetector.SimpleOnGestureListener
 	{
@@ -738,7 +713,7 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                             audioPlayer.setPlaybackParameters(playbackparams);
                         }
                     });
-                    return false;
+                    return true;
                 } else {
                     float velocityPercentX = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
                     if (velocityPercentX < 0.5) {
@@ -746,7 +721,7 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                     } else {
                         loopStartPosition = loopStartPosition - (long)(250 * velocityPercentX);
                     }
-                    return false;
+                    return true;
                 }
 			}
 			else if (e2.getX() - e1.getX() > MIN_SWIPPING_DISTANCE && Math.abs(velocityX) > THRESHOLD_VELOCITY)
@@ -783,7 +758,7 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                             audioPlayer.setPlaybackParameters(playbackparams);
                         }
                     });
-                    return false;
+                    return true;
                 } else {
                     float velocityPercentX = Math.abs(velocityX / 10000);          // the percent is a value in the range of (0, 1]
                     if (velocityPercentX < 0.5) {
@@ -791,10 +766,62 @@ private static class AudioExtractorsFactory implements ExtractorsFactory {
                     } else {
                         loopStartPosition = loopStartPosition + (long)(250 * velocityPercentX);
                     }
-			        return false;
+			        return true;
                 }
 			}
 			return false;
+		}
+	}
+
+	// Handles back button, shows exit popup
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+				.setMessage("Are you sure you want to exit?")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent ob = new Intent(DJPlayer.this, MainMenu.class);
+						startActivity(ob);
+						DJPlayer.this.finish();
+					}
+				}).setNegativeButton("No", null).show();
+	}
+
+	@Override
+	protected void onDestroy() {
+
+		super.onDestroy();
+		if (isPlaying) {
+			isPlaying = false;
+			loadSongfileThread = null;
+			audioPlayer.stop();
+			audioPlayer.release();
+		} else {
+			audioPlayer.release();
+		}
+	}
+
+	@Override
+	public void onPause() {
+
+		super.onPause();
+		if (isPlaying) {
+			isPlaying = false;
+			loadSongfileThread = null;
+			audioPlayer.stop();
+			audioPlayer.release();
+		} else {
+			audioPlayer.release();
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isPlaying) {
+			initializePlayer();
 		}
 	}
 

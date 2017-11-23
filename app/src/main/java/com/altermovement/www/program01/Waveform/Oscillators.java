@@ -9,6 +9,8 @@ import com.altermovement.www.program01.Oscillator;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import static java.lang.Math.*;
+
 public class Oscillators implements Runnable{
 
     private Thread thread;
@@ -30,14 +32,17 @@ public class Oscillators implements Runnable{
     public int amplitude = 32700;
 
     public double mod = 0;
-    public boolean mod_a;
-    public boolean mod_b;
-    public boolean mod_c;
+    private boolean mod_a;
+    private boolean mod_b;
+    private boolean mod_c;
     public int mod_amp;
 
     // DATAPOINT AND GRAPH SERIES
 
     private static LineGraphSeries<DataPoint> waveseries;
+    private int datasize;
+    private DataPoint[] datapp;
+    private int x;
 
     // AudioTrack
 
@@ -93,7 +98,7 @@ public class Oscillators implements Runnable{
 
         short carrier_mod[] = new short[size];
 
-        double doublepi = 8. * Math.atan(1.0);
+        double doublepi = 8. * atan(1.0);
 
         // WAVEFORM A B C PHASE
 
@@ -107,32 +112,36 @@ public class Oscillators implements Runnable{
 
         // ITERATOR PARAMETERS
 
-        int x = 0;
+        x = 0;
         int i;
 
         // GRAPH ARRAY DATA SIZE
-        int datasize = 72;
+        datasize = 256;
 
         // GRAPH INIT PARAMETERS
 
-        DataPoint[] datapp = new DataPoint[datasize];
+        datapp = new DataPoint[datasize];
+        waveseries = new LineGraphSeries<>();
 
         Oscillator.graphview.getViewport().setXAxisBoundsManual(true);
-        Oscillator.graphview.getViewport().setMinX(4);
-        Oscillator.graphview.getViewport().setMaxX(datasize-4);
-
+        Oscillator.graphview.getViewport().setMinX(8);
+        Oscillator.graphview.getViewport().setMaxX(datasize-8);
         Oscillator.graphview.getViewport().setYAxisBoundsManual(true);
         Oscillator.graphview.getViewport().setMinY(-amplitude);
         Oscillator.graphview.getViewport().setMaxY(+amplitude);
 
-        Oscillator.graphview.getViewport().setBackgroundColor(Color.rgb(64, 64, 64));
+//        Oscillator.graphview.getViewport().setBackgroundColor(Color.rgb(0, 64, 0));
 
-        Oscillator.graphview.getLegendRenderer().setVisible(false);
-        Oscillator.graphview.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        Oscillator.graphview.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        Oscillator.graphview.getGridLabelRenderer().setHighlightZeroLines(false);
+//        Oscillator.graphview.getLegendRenderer().setVisible(false);
 
-        waveseries = new LineGraphSeries<>();
+//        Oscillator.graphview.getGridLabelRenderer().setVerticalLabelsVisible(false);
+//        Oscillator.graphview.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+//        Oscillator.graphview.getGridLabelRenderer().setHighlightZeroLines(false);
+//        Oscillator.graphview.getGridLabelRenderer().setGridColor(Color.rgb(64, 64, 64));
+
+        waveseries.setColor(Color.rgb(255, 255, 255));
+        waveseries.setThickness(2);
+
         Oscillator.graphview.addSeries(waveseries);
 
         // WAVEFORM GENERATOR MAIN THREAD
@@ -144,34 +153,34 @@ public class Oscillators implements Runnable{
                 // WAVE {A, B, C, MOD} PHASE
                 // WAVE A PHASE
 
-                if (phase_a < Math.PI) {
+                if (phase_a < PI) {
                     phase_a += doublepi * frequency_a / rate;
                 } else {
-                    phase_a += (doublepi * frequency_a / rate) - (2 * Math.PI);
+                    phase_a += (doublepi * frequency_a / rate) - (2 * PI);
                 }
 
                 // WAVE B PHASE
 
-                if (phase_b < Math.PI) {
+                if (phase_b < PI) {
                     phase_b += doublepi * frequency_b / rate;
                 } else {
-                    phase_b += (doublepi * frequency_b / rate) - (2 * Math.PI);
+                    phase_b += (doublepi * frequency_b / rate) - (2 * PI);
                 }
 
                 // WAVE C PHASE
 
-                if (phase_c < Math.PI) {
+                if (phase_c < PI) {
                     phase_c += doublepi * frequency_c / rate;
                 } else {
-                    phase_c += (doublepi * frequency_c / rate) - (2 * Math.PI);
+                    phase_c += (doublepi * frequency_c / rate) - (2 * PI);
                 }
 
                 // WAVE MODULATOR PHASE
 
-                if (phasemod < Math.PI) {
+                if (phasemod < PI) {
                     phasemod += doublepi * mod / rate;
                 } else {
-                    phasemod += (doublepi * mod / rate) - (2 * Math.PI);
+                    phasemod += (doublepi * mod / rate) - (2 * PI);
                 }
 
                 carrier_mod[i] = sine(mod_amp, phasemod);
@@ -278,35 +287,22 @@ public class Oscillators implements Runnable{
                         }
                         break;
                 }
-
                 samples[i] = (short) (mixwaves(samples_a[i], samples_b[i], samples_c[i]) * amplitude / 32767);
-
-                if (x >= datasize) {
-                    x = 0;
-                }
-                if (i == x * 8 || x == 0) {
-                    int temp_graph = samples[i];
-                    datapp[x] = new DataPoint(x, temp_graph);
-                    x += 1;
-                }
+                writedatapoint(i, samples[i]);
             }
-
             writebuffer(samples);
             writeseries(datapp);
         }
-
         myWave.stop();
         myWave.release();
     }
 
     public void start() {
-
         thread = new Thread(this, "myWave");
         thread.start();
     }
 
     public void stop() {
-
         Oscillator.graphview.removeAllSeries();
         Thread t = thread;
         thread = null;
@@ -322,19 +318,19 @@ public class Oscillators implements Runnable{
     }
 
     private static short modulate(short am, double ph, double fph, short fm) {
-        return (short) (am * Math.cos(ph + fm * Math.sin(fph)));
+        return (short) (am * cos(ph + (fm * sin(fph))));
     }
 
     private static short square(int am, double ph) {
-        return (short) Math.round(am * Math.signum(Math.sin(ph)));
+        return (short) round(am * signum(sin(ph)));
     }
 
     private static short sine(int am, double ph) {
-        return (short)(am * Math.sin(ph));
+        return (short)(am * sin(ph));
     }
 
     private static short saw(int am, double ph) {
-        return (short) Math.round(am * Math.round((ph) / Math.PI));
+        return (short) round(am * round((ph) / PI));
     }
 
     private static void writebuffer(short[] shortbuffer){
@@ -348,6 +344,16 @@ public class Oscillators implements Runnable{
     private static short mixwaves(short wavea, short waveb, short wavec){
         short three = 3;
         return (short)((wavea + waveb + wavec) / three);
+    }
+
+    private void writedatapoint(int i, short smp) {
+        if (x >= datasize) {
+            x = 0;
+        }
+        if (i == x * 8 || x == 0) {
+            datapp[x] = new DataPoint(x, smp);
+            x++;
+        }
     }
 
 }

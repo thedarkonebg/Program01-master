@@ -1,5 +1,6 @@
 package com.altermovement.www.program01;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -93,6 +94,7 @@ public class Converter extends Activity {
 
         button.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View v) {
 
@@ -169,6 +171,7 @@ public class Converter extends Activity {
         // TAP BPM BUTTON FUNCTION
 
         findViewById(R.id.tap).setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("DefaultLocale")
             @Override
 
             public boolean onTouch(View v, MotionEvent event) {
