@@ -125,7 +125,7 @@ public class Oscillators implements Runnable{
 
         Oscillator.graphview.getViewport().setXAxisBoundsManual(true);
         Oscillator.graphview.getViewport().setMinX(0);
-        Oscillator.graphview.getViewport().setMaxX(datasize-8);
+        Oscillator.graphview.getViewport().setMaxX(datasize);
         Oscillator.graphview.getViewport().setYAxisBoundsManual(true);
         Oscillator.graphview.getViewport().setMinY(-amplitude);
         Oscillator.graphview.getViewport().setMaxY(+amplitude);
@@ -350,7 +350,7 @@ public class Oscillators implements Runnable{
         if (x >= datasize) {
             x = 0;
         }
-        if (i == x * 8 || x == 0) {
+        if (i == x * 16 || x == 0) {
             datapp[x] = new DataPoint(x, smp);
             x++;
         }
