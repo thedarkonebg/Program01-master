@@ -124,7 +124,7 @@ public class Oscillators implements Runnable{
         waveseries = new LineGraphSeries<>();
 
         Oscillator.graphview.getViewport().setXAxisBoundsManual(true);
-        Oscillator.graphview.getViewport().setMinX(8);
+        Oscillator.graphview.getViewport().setMinX(0);
         Oscillator.graphview.getViewport().setMaxX(datasize-8);
         Oscillator.graphview.getViewport().setYAxisBoundsManual(true);
         Oscillator.graphview.getViewport().setMinY(-amplitude);
