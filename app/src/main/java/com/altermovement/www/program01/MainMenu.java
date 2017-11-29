@@ -1,20 +1,36 @@
 package com.altermovement.www.program01;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
 public class MainMenu extends Activity {
-	@Override
 
+	private Context mContext;
+	private Activity mActivity;
+	private PopupWindow mPopupWindow;
+	private RelativeLayout parent_layout;
+	private DisplayMetrics metrics;
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
@@ -28,28 +44,59 @@ public class MainMenu extends Activity {
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		final Button but11 = (Button) findViewById(R.id.but1);
-		final Button but22 = (Button) findViewById(R.id.but2);
-		final Button but33 = (Button) findViewById(R.id.but3);
-		final Button but44 = (Button) findViewById(R.id.but4);
-		final Button but55 = (Button) findViewById(R.id.signal);
-		final Button but66 = (Button) findViewById(R.id.but6);
+		mContext = getApplicationContext();
+		mActivity = MainMenu.this;
+		parent_layout = (RelativeLayout) findViewById(R.id.parent_layout);
 
-		but11.setOnClickListener(new View.OnClickListener() {
+		metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+		final Button aboutUsBtn = (Button) findViewById(R.id.but1);
+		final Button bpmConvertBtn = (Button) findViewById(R.id.but2);
+		final Button midiControllerBtn = (Button) findViewById(R.id.but3);
+		final Button djPlayerBtn = (Button) findViewById(R.id.but4);
+		final Button synthBtn = (Button) findViewById(R.id.signal);
+		final Button exitBtn = (Button) findViewById(R.id.but6);
+
+		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO
+
+				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+				View customView = inflater.inflate(R.layout.popup_layout, null);
+
+				mPopupWindow = new PopupWindow(
+						customView,
+						(int)(metrics.widthPixels * 0.7 ),
+						(int)(metrics.heightPixels * 0.7 )
+				);
+
+				if(Build.VERSION.SDK_INT>=21){
+					mPopupWindow.setElevation(5.0f);
+				}
+
+				ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
+
+				closeButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						// Dismiss the popup window
+						mPopupWindow.dismiss();
+					}
+				});
+
+				mPopupWindow.showAtLocation(parent_layout, Gravity.CENTER,0,0);
 			}
 		});
 
-		but22.setOnClickListener(new View.OnClickListener() {
+		bpmConvertBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Converter.class));
 			}
 		});
 
-		but33.setOnClickListener(new View.OnClickListener() {
+		midiControllerBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast toast;
@@ -59,21 +106,21 @@ public class MainMenu extends Activity {
 			}
 		});
 
-		but44.setOnClickListener(new View.OnClickListener() {
+		djPlayerBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), DJPlayer.class));
 			}
 		});
 
-		but55.setOnClickListener(new View.OnClickListener() {
+		synthBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), Oscillator.class));
 			}
 		});
 
-		but66.setOnClickListener(new View.OnClickListener() {
+		exitBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				new AlertDialog.Builder(MainMenu.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
@@ -86,7 +133,6 @@ public class MainMenu extends Activity {
 						}).setNegativeButton("No", null).show();
 			}
 		});
-
 	}
 
 	@Override
@@ -101,13 +147,11 @@ public class MainMenu extends Activity {
 				}).setNegativeButton("No", null).show();
 	}
 
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		this.finish();
 	}
-
 
 	@Override
 	protected void onPause() {

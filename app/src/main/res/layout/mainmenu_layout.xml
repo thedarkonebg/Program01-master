@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Theme.AppCompat.NoActionBar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:foregroundGravity="center"
-    android:keepScreenOn="true"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="@+id/parent"
-    app:layout_constraintRight_toRightOf="@+id/parent"
-    app:layout_constraintTop_toTopOf="@+id/parent">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             style="@style/Theme.AppCompat.NoActionBar"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@android:color/black"
+                                             android:foregroundGravity="center"
+                                             android:keepScreenOn="true"
+                                             android:orientation="vertical"
+                                             app:layout_constraintBottom_toBottomOf="parent"
+                                             app:layout_constraintLeft_toLeftOf="@+id/parent"
+                                             app:layout_constraintRight_toRightOf="@+id/parent"
+                                             app:layout_constraintTop_toTopOf="@+id/parent"
+                                             tools:context=".MainMenu">
+
+
+    <RelativeLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="300dp"
+        android:layout_height="450dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView">
+    </RelativeLayout>
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="fitXY"
         android:src="@drawable/bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitXY"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:clipToPadding="false"
         android:fillViewport="false"
         android:foregroundGravity="center_horizontal|center"
@@ -80,7 +96,7 @@
                     android:src="@drawable/alterlogo"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    tools:layout_editor_absoluteY="94dp" />
+                    tools:layout_editor_absoluteY="94dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -108,7 +124,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@+id/signal"
-                    tools:layout_editor_absoluteX="8dp" />
+                    tools:layout_editor_absoluteX="8dp"/>
 
                 <Button
                     android:id="@+id/but2"
@@ -122,7 +138,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@+id/but3"
-                    tools:layout_editor_absoluteX="8dp" />
+                    tools:layout_editor_absoluteX="8dp"/>
 
                 <Button
                     android:id="@+id/but3"
@@ -151,7 +167,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@+id/but1"
-                    tools:layout_editor_absoluteX="8dp" />
+                    tools:layout_editor_absoluteX="8dp"/>
 
                 <Button
                     android:id="@+id/signal"
@@ -165,7 +181,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                    tools:layout_editor_absoluteY="0dp"/>
 
                 <Button
                     android:id="@+id/but6"
@@ -178,7 +194,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                    tools:layout_editor_absoluteY="0dp"/>
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
