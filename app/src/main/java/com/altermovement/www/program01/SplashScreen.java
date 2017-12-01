@@ -53,7 +53,6 @@ public class SplashScreen extends Activity {
 		appname.setScaleY(2);
 
 		Runnable logofi = new Runnable() {
-
 			@Override
 			public void run() {
 
@@ -69,7 +68,6 @@ public class SplashScreen extends Activity {
 
 
 		Runnable logofo = new Runnable() {
-
 			@Override
 			public void run() {
 				logo.setAlpha(1f);
@@ -80,7 +78,6 @@ public class SplashScreen extends Activity {
 		};
 
 		Runnable apptextfi = new Runnable() {
-
 			@Override
 			public void run() {
 				appname.setAlpha(0f);
@@ -93,7 +90,6 @@ public class SplashScreen extends Activity {
 		};
 
 		Runnable apptextfo = new Runnable() {
-
 			@Override
 			public void run() {
 				appname.setAlpha(1f);

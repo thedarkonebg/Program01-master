@@ -3,22 +3,15 @@ apply plugin: 'com.android.application'
 android {
     flavorDimensions "default"
     signingConfigs {
-        config {
-            keyAlias 'key0'
-            keyPassword '666grama'
-            storeFile file('C:/Users/DeyanDark/key.jks')
-            storePassword '666grama'
-        }
     }
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.altermovement.www.program01"
         minSdkVersion 17
-        targetSdkVersion 21
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        signingConfig signingConfigs.config
     }
     repositories {
         maven {
@@ -28,17 +21,15 @@ android {
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
     productFlavors {
         OneForAll {
             applicationId 'com.oneforall'
             minSdkVersion 17
-            targetSdkVersion 21
+            targetSdkVersion 25
             versionCode 1
             versionName '1.0'
-            signingConfig signingConfigs.config
         }
     }
 }
