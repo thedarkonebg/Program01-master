@@ -23,7 +23,6 @@ import android.widget.Toast;
 public class MainMenu extends Activity {
 
 	private Context mContext;
-	private Activity mActivity;
 	private PopupWindow mPopupWindow;
 	private RelativeLayout parent_layout;
 	private DisplayMetrics metrics;
@@ -43,7 +42,7 @@ public class MainMenu extends Activity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 		mContext = getApplicationContext();
-		mActivity = MainMenu.this;
+		//Activity mActivity = MainMenu.this;
 		parent_layout = (RelativeLayout) findViewById(R.id.parent_layout);
 
 		metrics = new DisplayMetrics();

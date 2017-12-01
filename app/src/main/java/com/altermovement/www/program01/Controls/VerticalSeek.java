@@ -25,7 +25,6 @@ public class VerticalSeek extends AppCompatSeekBar {
     public static final int ROTATION_ANGLE_CW_270 = 270;
 
     private boolean mIsDragging;
-    private Drawable mThumb_;
     private Method mMethodSetProgressFromUser;
     private int mRotationAngle = ROTATION_ANGLE_CW_90;
 
@@ -59,7 +58,7 @@ public class VerticalSeek extends AppCompatSeekBar {
 
     @Override
     public void setThumb(Drawable thumb) {
-        mThumb_ = thumb;
+        Drawable mThumb_ = thumb;
         super.setThumb(thumb);
     }
 

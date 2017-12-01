@@ -257,8 +257,6 @@ public class Converter extends Activity {
 
         });
 
-        // RESET OUTPUT FIELD AND CREATE NEW EMPTY ARRAY FOR 8 TAPS
-
         // EXIT BUTTON
 
         final Button exit = (Button) findViewById(R.id.exit);
